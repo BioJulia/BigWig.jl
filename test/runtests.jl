@@ -1,5 +1,18 @@
 using Test
 using BigWig
+import YAML
+using GenomicFeatures
+
+function get_bio_fmt_specimens(commit="222f58c8ef3e3480f26515d99d3784b8cfcca046")
+    path = joinpath(dirname(@__FILE__), "BioFmtSpecimens")
+    if !isdir(path)
+        run(`git clone https://github.com/BioJulia/BioFmtSpecimens.git $(path)`)
+    end
+    cd(path) do
+        #run(`git checkout $(commit)`)
+    end
+    return path
+end
 
 @testset "BigWig" begin
     @testset "empty" begin
@@ -28,7 +41,7 @@ using BigWig
         @test BigWig.chromend(records[1]) === rightposition(records[1]) === 100
         @test BigWig.hasvalue(records[1])
         @test BigWig.value(records[1]) === 3.14f0
-        @test startswith(repr(records[1]), "GenomicFeatures.BigWig.Record:\n")
+        @test startswith(repr(records[1]), "BigWig.Record:\n")
         interval = convert(Interval, records[1])
         @test seqname(interval) == "chr1"
         @test leftposition(interval) === 50
