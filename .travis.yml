@@ -16,3 +16,12 @@ matrix:
 
 after_success:
   - julia --project=coverage/ coverage/coverage.jl
+
+jobs:
+  include:
+    - stage: "Documentation"
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs/ docs/make.jl
+      after_success: skip
