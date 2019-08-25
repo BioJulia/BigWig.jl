@@ -16,7 +16,7 @@ Data representation and IO tools for the BigWig file format.
 [![Build status](https://ci.appveyor.com/api/projects/status/jny2ep4u3cmly8pj/branch/master?svg=true)](https://ci.appveyor.com/project/BioJulia/BigWig-jl/branch/master)
 [![BigWig](http://pkg.julialang.org/badges/BigWig_0.7.svg)](http://pkg.julialang.org/?pkg=BigWig)
 [![BigWig](http://pkg.julialang.org/badges/BigWig_1.0.svg)](http://pkg.julialang.org/?pkg=BigWig)
-[![codecov.io](http://codecov.io/github/BioJulia/BigWig.jl/coverage.svg?branch=master)](http://codecov.io/github/BioJulia/BigWig.jl?branch=master)
+[![codecov.io](http://codecov.io/github/BioJulia/BigWig.jl/coverage.svg?branch=master)](http://codecov.io/github/BioJulia/BigWig.jl?branch=master) [![Join the chat at https://gitter.im/BioJulia/BigWig.jl](https://badges.gitter.im/BioJulia/BigWig.jl.svg)](https://gitter.im/BioJulia/BigWig.jl?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Installation
 You can install BigWig from the Julia REPL:
