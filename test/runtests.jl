@@ -1,5 +1,19 @@
 using Test
 using BigWig
+import YAML
+import GenomicFeatures
+using BioCore
+
+function get_bio_fmt_specimens(commit="222f58c8ef3e3480f26515d99d3784b8cfcca046")
+    path = joinpath(dirname(@__FILE__), "BioFmtSpecimens")
+    if !isdir(path)
+        run(`git clone https://github.com/BioJulia/BioFmtSpecimens.git $(path)`)
+    end
+    cd(path) do
+        #run(`git checkout $(commit)`)
+    end
+    return path
+end
 
 @testset "BigWig" begin
     @testset "empty" begin
@@ -20,7 +34,7 @@ using BigWig
         reader = BigWig.Reader(IOBuffer(data))
         records = collect(reader)
         @test length(records) == 1
-        @test BigWig.haschrom(records[1]) === hasseqname(records[1]) === true
+        @test BigWig.haschrom(records[1]) === BioCore.hasseqname(records[1]) === true
         @test BigWig.chrom(records[1]) == seqname(records[1]) == "chr1"
         @test BigWig.haschromstart(records[1]) === hasleftposition(records[1]) === true
         @test BigWig.chromstart(records[1]) === leftposition(records[1]) === 50
@@ -28,17 +42,17 @@ using BigWig
         @test BigWig.chromend(records[1]) === rightposition(records[1]) === 100
         @test BigWig.hasvalue(records[1])
         @test BigWig.value(records[1]) === 3.14f0
-        @test startswith(repr(records[1]), "GenomicFeatures.BigWig.Record:\n")
-        interval = convert(Interval, records[1])
-        @test seqname(interval) == "chr1"
-        @test leftposition(interval) === 50
-        @test rightposition(interval) === 100
-        @test metadata(interval) === 3.14f0
+        @test startswith(repr(records[1]), "BigWig.Record:\n")
+        interval = convert(GenomicFeatures.Interval, records[1])
+        @test GenomicFeatures.seqname(interval) == "chr1"
+        @test GenomicFeatures.leftposition(interval) === 50
+        @test GenomicFeatures.rightposition(interval) === 100
+        @test GenomicFeatures.metadata(interval) === 3.14f0
         @test all(isnan.(BigWig.values(reader, "chr1", 1:49)))
         @test BigWig.values(reader, "chr1", 50:51) == [3.14f0, 3.14f0]
         @test BigWig.values(reader, "chr1", 99:100) == [3.14f0, 3.14f0]
         @test all(isnan.(BigWig.values(reader, "chr1", 101:200)))
-        @test BigWig.values(reader, Interval("chr1", 55, 56)) == [3.14f0, 3.14f0]
+        @test BigWig.values(reader, GenomicFeatures.Interval("chr1", 55, 56)) == [3.14f0, 3.14f0]
 
         # bedgraph (default)
         buffer = IOBuffer()
@@ -109,7 +123,7 @@ using BigWig
         reader = BigWig.Reader(IOBuffer(data))
         records = collect(reader)
         @test length(records) == 10_000 + n
-        records = collect(eachoverlap(reader, Interval("chr1", 50_001, 50_165)))
+        records = collect(GenomicFeatures.eachoverlap(reader, GenomicFeatures.Interval("chr1", 50_001, 50_165)))
         @test length(records) == 17
         @testset for bin in [1, 5, 10, 51, 300]
             for scale in 1:2

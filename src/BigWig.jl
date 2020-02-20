@@ -9,8 +9,9 @@
 module BigWig
 
 import BufferedStreams
-import GenomicFeatures: GenomicFeatures, BBI, Interval
+import GenomicFeatures: GenomicFeatures, Interval
 import Libz
+using BBI
 using BioCore
 
 include("header.jl")
