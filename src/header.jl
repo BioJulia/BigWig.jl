@@ -30,13 +30,14 @@ end
 function encode_datatype(datatype::Symbol)
     if datatype == :bedgraph
         return 0x01
-    elseif datatype == :varstep
-        return 0x02
-    elseif datatype == :fixedstep
-        return 0x03
-    else
-        throw(ArgumentError("invalid data type: $(datatype)"))
     end
+    if datatype == :varstep
+        return 0x02
+    end
+    if datatype == :fixedstep
+        return 0x03
+    end
+    throw(ArgumentError("invalid data type: $(datatype)"))
 end
 
 function Base.read(io::IO, ::Type{SectionHeader})

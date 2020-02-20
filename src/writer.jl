@@ -256,14 +256,18 @@ end
 function check_interval(state::WriterState, chromid::UInt32, chromstart::UInt32, chromend::UInt32)
     if chromstart ≥ chromend
         throw(ArgumentError("empty interval"))
-    elseif BBI.compare_intervals((chromid, chromstart, chromend), (state.chromid, state.chromstart_prev, state.chromend_prev)) != 1
+    end
+    if BBI.compare_intervals((chromid, chromstart, chromend), (state.chromid, state.chromstart_prev, state.chromend_prev)) != 1
         throw(ArgumentError("disordered intervals"))
-    elseif isvarstep(state.datatype) && chromend - chromstart != state.itemspan
+    end
+    if isvarstep(state.datatype) && chromend - chromstart != state.itemspan
         throw(ArgumentError("inconsistent interval span"))
-    elseif isfixedstep(state.datatype)
+    end
+    if isfixedstep(state.datatype)
         if chromend - chromstart != state.itemspan
             throw(ArgumentError("inconsistent interval span"))
-        elseif state.count > 1 && chromstart - state.chromstart_prev != state.itemstep
+        end
+        if state.count > 1 && chromstart - state.chromstart_prev != state.itemstep
             throw(ArgumentError("inconsistent intreval step"))
         end
     end

@@ -139,9 +139,8 @@ function Base.iterate(reader::Reader, state)
     advance!(reader, state)
     if state.done
         return nothing
-    else
-        return copy(state.record), state
     end
+    return copy(state.record), state
 end
 
 function advance!(reader::Reader, state::IteratorState)

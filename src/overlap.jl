@@ -51,9 +51,8 @@ function Base.iterate(iter::OverlapIterator, state::OverlapIteratorState)
     advance!(iter, state)
     if state.done
         return nothing
-    else
-        return copy(state.record), state
     end
+    return copy(state.record), state
 end
 
 function advance!(iter::OverlapIterator, state::OverlapIteratorState)
