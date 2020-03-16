@@ -1,19 +1,9 @@
 using Test
 using BigWig
-import YAML
 import GenomicFeatures
 using BioCore
 
-function get_bio_fmt_specimens(commit="222f58c8ef3e3480f26515d99d3784b8cfcca046")
-    path = joinpath(dirname(@__FILE__), "BioFmtSpecimens")
-    if !isdir(path)
-        run(`git clone https://github.com/BioJulia/BioFmtSpecimens.git $(path)`)
-    end
-    cd(path) do
-        #run(`git checkout $(commit)`)
-    end
-    return path
-end
+using FormatSpecimens
 
 @testset "BigWig" begin
     @testset "empty" begin
@@ -166,13 +156,12 @@ end
             @test original == copy
         end
 
-        dir = joinpath(get_bio_fmt_specimens(), "BBI")
-        for specimen in YAML.load_file(joinpath(dir, "index.yml"))
-            valid = get(specimen, "valid", true)
-            bigwig = "bigwig" ∈ split(specimen["tags"])
-            if valid && bigwig
+        dir = path_of_format("BBI")
+        for specimen in list_valid_specimens("BBI")
+            if hastag(specimen, "bigwig")
                 test_round_trip(joinpath(dir, specimen["filename"]))
             end
         end
+
     end
 end
