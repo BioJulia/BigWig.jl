@@ -1,4 +1,4 @@
-# <img src="./docs/src/assets/logo.svg" width="30%" align="right" /> BigWig.jl
+# BigWig.jl
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Latest Release](https://img.shields.io/github/release/BioJulia/BigWig.jl.svg)](https://github.com/BioJulia/BigWig.jl/releases/latest)
@@ -7,7 +7,7 @@
 [![Latest documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://biojulia.github.io/BigWig.jl/dev/)
 [![Join the chat at https://gitter.im/BioJulia/BigWig.jl](https://badges.gitter.im/BioJulia/BigWig.jl.svg)](https://gitter.im/BioJulia/BigWig.jl)
 
-> This project follows the [semver](http://semver.org) pro forma and uses the [git-flow branching model](https://nvie.com/posts/a-successful-git-branching-model/ "original blog post").
+> This project follows the [semver](http://semver.org) pro forma and uses the [git-flow branching model](https://nvie.com/posts/a-successful-git-branching-model/).
 
 ## Description
 This package provides data representation and IO tools for the bigWig file format.

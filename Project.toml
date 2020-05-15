@@ -1,0 +1,26 @@
+name = "BigWig"
+uuid = "9d649c22-cb6b-11e8-1fa9-f3896fced444"
+authors = ["Kenta Sato <bicycle1885@gmail.com>", "Ben J. Ward <benjward@protonmail.com>", "Ciarán O'Mara <Ciaran.OMara@utas.edu.au>"]
+version = "0.1.0"
+
+[deps]
+BBI = "19670fab-07f0-5a41-99c5-c090d774ee27"
+BioCore = "37cfa864-2cd6-5c12-ad9e-b6597d696c81"
+BufferedStreams = "e1450e63-4bb3-523b-b2a4-4ffa8c0fd77d"
+GenomicFeatures = "899a7d2d-5c61-547b-bef9-6698a8d05446"
+Libz = "2ec943e9-cfe8-584d-b93d-64dcb6d567b7"
+
+[compat]
+BBI = "0.2"
+BioCore = "2"
+BufferedStreams = "1"
+GenomicFeatures = "2"
+Libz = "1"
+julia = "1.1"
+
+[extras]
+FormatSpecimens = "3372ea36-2a1a-11e9-3eb7-996970b6ffbd"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["FormatSpecimens", "Test"]
