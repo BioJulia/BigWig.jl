@@ -10,20 +10,13 @@
 > This project follows the [semver](http://semver.org) pro forma and uses the [git-flow branching model](https://nvie.com/posts/a-successful-git-branching-model/).
 
 ## Description
-This package provides data representation and IO tools for the bigWig file format.
+The BigWig package provides data representation and IO tools for the bigWig file format.
 The bigWig format is a binary format for associating floating point numbers with bases of the genome.
 The bigWig files are indexed to quickly fetch specific regions.
 
 ## Installation
-The latest version of BigWig is made available to install through BioJulia's package registry.
-By default, Julia's package manager only includes the "General" package registry.
-
-To add the BioJulia registry from the [Julia REPL](https://docs.julialang.org/en/v1/manual/getting-started/), press `]` to enter [pkg mode](https://docs.julialang.org/en/v1/stdlib/Pkg/), then enter the following command:
-```julia
-registry add https://github.com/BioJulia/BioJuliaRegistry.git
-```
-
-Once the registry is added to your configuration, you can install BigWig while in [pkg mode](https://docs.julialang.org/en/v1/stdlib/Pkg/) with the following:
+You can install the BigWig package from the [Julia REPL](https://docs.julialang.org/en/v1/manual/getting-started/).
+Press `]` to enter [pkg mode](https://docs.julialang.org/en/v1/stdlib/Pkg/), then enter the following command:
 ```julia
 add BigWig
 ```
