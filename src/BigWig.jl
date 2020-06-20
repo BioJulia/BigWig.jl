@@ -8,11 +8,12 @@
 
 module BigWig
 
-import BufferedStreams
-import GenomicFeatures: GenomicFeatures, Interval
-import Libz
 using BBI
 using BioCore
+
+import BufferedStreams
+import GenomicFeatures: GenomicFeatures, Interval, seqname, leftposition, rightposition
+import Libz
 
 include("header.jl")
 include("reader.jl")

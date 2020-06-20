@@ -25,11 +25,11 @@ using FormatSpecimens
         records = collect(reader)
         @test length(records) == 1
         @test BigWig.haschrom(records[1]) === BioCore.hasseqname(records[1]) === true
-        @test BigWig.chrom(records[1]) == seqname(records[1]) == "chr1"
-        @test BigWig.haschromstart(records[1]) === hasleftposition(records[1]) === true
-        @test BigWig.chromstart(records[1]) === leftposition(records[1]) === 50
-        @test BigWig.haschromend(records[1]) === hasrightposition(records[1]) === true
-        @test BigWig.chromend(records[1]) === rightposition(records[1]) === 100
+        @test BigWig.chrom(records[1]) == BioCore.seqname(records[1]) == "chr1"
+        @test BigWig.haschromstart(records[1]) === BioCore.hasleftposition(records[1]) === true
+        @test BigWig.chromstart(records[1]) === BioCore.leftposition(records[1]) === 50
+        @test BigWig.haschromend(records[1]) === BioCore.hasrightposition(records[1]) === true
+        @test BigWig.chromend(records[1]) === BioCore.rightposition(records[1]) === 100
         @test BigWig.hasvalue(records[1])
         @test BigWig.value(records[1]) === 3.14f0
         @test startswith(repr(records[1]), "BigWig.Record:\n")

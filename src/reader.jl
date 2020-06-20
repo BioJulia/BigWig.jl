@@ -69,7 +69,7 @@ Get a vector of values within `interval` from `reader`.
 This function fills missing values with `NaN32`.
 """
 function values(reader::Reader, interval::Interval)
-    return values(reader, interval.seqname, interval.first:interval.last)
+    return values(reader, seqname(interval), leftposition(interval):rightposition(interval))
 end
 
 """

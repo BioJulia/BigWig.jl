@@ -17,12 +17,12 @@ function Base.IteratorSize(::Type{OverlapIterator})
 end
 
 function GenomicFeatures.eachoverlap(reader::Reader, interval::Interval)
-    if haskey(reader.chroms, interval.seqname)
-        id, _ = reader.chroms[interval.seqname]
+    if haskey(reader.chroms, seqname(interval))
+        id, _ = reader.chroms[seqname(interval)]
     else
         id = typemax(UInt32)
     end
-    return OverlapIterator(reader, id, interval.first - 1, interval.last)
+    return OverlapIterator(reader, id, leftposition(interval) - 1, rightposition(interval))
 end
 
 mutable struct OverlapIteratorState
