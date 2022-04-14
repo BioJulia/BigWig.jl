@@ -62,13 +62,13 @@ function chromlist(reader::Reader)::Vector{Tuple{String,Int}}
 end
 
 """
-    values(reader::BigWig.Reader, interval::Interval)::Vector{Float32}
+    values(reader::BigWig.Reader, interval::AbstractGenomicInterval)::Vector{Float32}
 
 Get a vector of values within `interval` from `reader`.
 
 This function fills missing values with `NaN32`.
 """
-function values(reader::Reader, interval::Interval)
+function values(reader::Reader, interval::AbstractGenomicInterval)
     return values(reader, seqname(interval), leftposition(interval):rightposition(interval))
 end
 
@@ -86,7 +86,7 @@ function values(reader::Reader, chrom::AbstractString, range::UnitRange)::Vector
     end
     fill!(values, NaN32)
     offset = first(range) - 1
-    for record in GenomicFeatures.eachoverlap(reader, Interval(chrom, first(range), last(range)))
+    for record in GenomicFeatures.eachoverlap(reader, GenomicInterval(chrom, first(range), last(range)))
         rstart = clamp(record.chromstart+1-offset, 1, lastindex(values))
         rend = clamp(record.chromend-offset, 1, lastindex(values))
         values[rstart:rend] .= record.value

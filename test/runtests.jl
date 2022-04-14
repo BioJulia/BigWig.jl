@@ -33,7 +33,7 @@ using FormatSpecimens
         @test BigWig.hasvalue(records[1])
         @test BigWig.value(records[1]) === 3.14f0
         @test startswith(repr(records[1]), "BigWig.Record:\n")
-        interval = convert(GenomicFeatures.Interval, records[1])
+        interval = convert(GenomicFeatures.GenomicInterval, records[1])
         @test GenomicFeatures.seqname(interval) == "chr1"
         @test GenomicFeatures.leftposition(interval) === 50
         @test GenomicFeatures.rightposition(interval) === 100
@@ -42,7 +42,7 @@ using FormatSpecimens
         @test BigWig.values(reader, "chr1", 50:51) == [3.14f0, 3.14f0]
         @test BigWig.values(reader, "chr1", 99:100) == [3.14f0, 3.14f0]
         @test all(isnan.(BigWig.values(reader, "chr1", 101:200)))
-        @test BigWig.values(reader, GenomicFeatures.Interval("chr1", 55, 56)) == [3.14f0, 3.14f0]
+        @test BigWig.values(reader, GenomicFeatures.GenomicInterval("chr1", 55, 56)) == [3.14f0, 3.14f0]
 
         # bedgraph (default)
         buffer = IOBuffer()
@@ -113,7 +113,7 @@ using FormatSpecimens
         reader = BigWig.Reader(IOBuffer(data))
         records = collect(reader)
         @test length(records) == 10_000 + n
-        records = collect(GenomicFeatures.eachoverlap(reader, GenomicFeatures.Interval("chr1", 50_001, 50_165)))
+        records = collect(GenomicFeatures.eachoverlap(reader, GenomicFeatures.GenomicInterval("chr1", 50_001, 50_165)))
         @test length(records) == 17
         @testset for bin in [1, 5, 10, 51, 300]
             for scale in 1:2

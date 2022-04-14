@@ -12,7 +12,7 @@ using BBI
 using BioCore
 
 import BufferedStreams
-import GenomicFeatures: GenomicFeatures, Interval, seqname, leftposition, rightposition
+import GenomicFeatures: GenomicFeatures, AbstractGenomicInterval, GenomicInterval, seqname, leftposition, rightposition
 import Libz
 
 include("header.jl")

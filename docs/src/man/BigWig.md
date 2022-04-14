@@ -16,7 +16,7 @@ using BigWig
 reader = open(BigWig.Reader, "data.cov.bw")
 
 # Iterate over records overlapping with a query interval.
-for record in eachoverlap(reader, Interval("Chr2", 5001, 6000))
+for record in eachoverlap(reader, GenomicInterval("Chr2", 5001, 6000))
     # Extract the start position, end position and value of the record.
     startpos = BigWig.chromstart(record)
     endpos = BigWig.chromend(record)
@@ -32,7 +32,7 @@ close(reader)
 This returns a value per position within the query region:
 ```julia
 # Get values in Chr2:5001-6000 as a vector of 1000 elements.
-BigWig.values(reader, Interval("Chr2", 5001, 6000))
+BigWig.values(reader, GenomicInterval("Chr2", 5001, 6000))
 ```
 
 Iterating over all records is also supported:

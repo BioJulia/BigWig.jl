@@ -14,7 +14,7 @@ Libz = "2ec943e9-cfe8-584d-b93d-64dcb6d567b7"
 BBI = "0.2"
 BioCore = "2"
 BufferedStreams = "1"
-GenomicFeatures = "2"
+GenomicFeatures = "3"
 Libz = "1"
 julia = "1"
 
