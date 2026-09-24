@@ -268,7 +268,7 @@ function check_interval(state::WriterState, chromid::UInt32, chromstart::UInt32,
             throw(ArgumentError("inconsistent interval span"))
         end
         if state.count > 1 && chromstart - state.chromstart_prev != state.itemstep
-            throw(ArgumentError("inconsistent intreval step"))
+            throw(ArgumentError("inconsistent interval step"))
         end
     end
 end
