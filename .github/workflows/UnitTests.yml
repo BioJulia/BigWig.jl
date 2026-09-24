@@ -3,41 +3,46 @@ name: Unit Tests
 on:
   - push
   - pull_request
+  - workflow_dispatch
+
+permissions:
+  contents: read
 
 jobs:
   test:
+    name: Julia ${{ matrix.julia-version }} - ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
         julia-version:
-          - '1.0' # LTS
+          - '1.10' # LTS
           - '1'
-        julia-arch: [x64, x86]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-        experimental: [false]
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        experimental: [ false ]
         include:
           - julia-version: nightly
-            julia-arch: x64
             os: ubuntu-latest
             experimental: true
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
       - name: Setup Julia
-        uses: julia-actions/setup-julia@v1
+        uses: julia-actions/setup-julia@v3
         with:
           version: ${{ matrix.julia-version }}
       - name: Run Tests
-        uses: julia-actions/julia-runtest@latest
+        uses: julia-actions/julia-runtest@v1
       - name: Create CodeCov
+        if: matrix.julia-version == '1' && matrix.os == 'ubuntu-latest'
         uses: julia-actions/julia-processcoverage@v1
       - name: Upload CodeCov
-        uses: codecov/codecov-action@v1
+        if: matrix.julia-version == '1' && matrix.os == 'ubuntu-latest'
+        uses: codecov/codecov-action@v7
         with:
-          file: ./lcov.info
+          files: ./lcov.info
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
