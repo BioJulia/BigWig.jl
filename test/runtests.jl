@@ -8,20 +8,18 @@ using FormatSpecimens
 @testset "BigWig" begin
     @testset "empty" begin
         buffer = IOBuffer()
-        data = buffer.data
         writer = BigWig.Writer(buffer, [("chr1", 1000)])
-        close(writer)
-        reader = BigWig.Reader(IOBuffer(data))
+        BigWig.finalize_file(writer)
+        reader = BigWig.Reader(seekstart(buffer))
         @test length(collect(reader)) == 0
     end
 
     @testset "small" begin
         buffer = IOBuffer()
-        data = buffer.data
         writer = BigWig.Writer(buffer, [("chr1", 1000)])
         write(writer, ("chr1", 50, 100, 3.14))
-        close(writer)
-        reader = BigWig.Reader(IOBuffer(data))
+        BigWig.finalize_file(writer)
+        reader = BigWig.Reader(seekstart(buffer))
         records = collect(reader)
         @test length(records) == 1
         @test BigWig.haschrom(records[1]) === BioCore.hasseqname(records[1]) === true
@@ -46,13 +44,12 @@ using FormatSpecimens
 
         # bedgraph (default)
         buffer = IOBuffer()
-        data = buffer.data
         writer = BigWig.Writer(buffer, [("chr1", 1000)]; datatype=:bedgraph)
         write(writer, ("chr1",  1, 10, 0.0))
         write(writer, ("chr1", 15, 15, 1.0))
         write(writer, ("chr1", 90, 99, 2.0))
-        close(writer)
-        reader = BigWig.Reader(IOBuffer(data))
+        BigWig.finalize_file(writer)
+        reader = BigWig.Reader(seekstart(buffer))
         records = collect(reader)
         @test length(records) == 3
         @test BigWig.chrom.(records) == ["chr1", "chr1", "chr1"]
@@ -62,13 +59,12 @@ using FormatSpecimens
 
         # varstep
         buffer = IOBuffer()
-        data = buffer.data
         writer = BigWig.Writer(buffer, [("chr1", 1000)]; datatype=:varstep)
         write(writer, ("chr1",  1, 10, 0.0))
         write(writer, ("chr1", 15, 24, 1.0))
         write(writer, ("chr1", 90, 99, 2.0))
-        close(writer)
-        reader = BigWig.Reader(IOBuffer(data))
+        BigWig.finalize_file(writer)
+        reader = BigWig.Reader(seekstart(buffer))
         records = collect(reader)
         @test length(records) == 3
         @test BigWig.chrom.(records) == ["chr1", "chr1", "chr1"]
@@ -78,13 +74,12 @@ using FormatSpecimens
 
         # fixedstep
         buffer = IOBuffer()
-        data = buffer.data
         writer = BigWig.Writer(buffer, [("chr1", 1000)]; datatype=:fixedstep)
         write(writer, ("chr1",  1,  5, 0.0))
         write(writer, ("chr1", 11, 15, 1.0))
         write(writer, ("chr1", 21, 25, 2.0))
-        close(writer)
-        reader = BigWig.Reader(IOBuffer(data))
+        BigWig.finalize_file(writer)
+        reader = BigWig.Reader(seekstart(buffer))
         records = collect(reader)
         @test length(records) == 3
         @test BigWig.chrom.(records) == ["chr1", "chr1", "chr1"]
@@ -95,7 +90,6 @@ using FormatSpecimens
 
     @testset "large" begin
         buffer = IOBuffer()
-        data = buffer.data
         binsize = 32
         writer = BigWig.Writer(buffer, [("chr1", 100_000), ("chr2", 90_000)], binsize=binsize)
         for i in 1:10_000
@@ -109,8 +103,8 @@ using FormatSpecimens
             n += 1
             p += sz + 1
         end
-        close(writer)
-        reader = BigWig.Reader(IOBuffer(data))
+        BigWig.finalize_file(writer)
+        reader = BigWig.Reader(seekstart(buffer))
         records = collect(reader)
         @test length(records) == 10_000 + n
         records = collect(GenomicFeatures.eachoverlap(reader, GenomicFeatures.Interval("chr1", 50_001, 50_165)))
@@ -134,7 +128,6 @@ using FormatSpecimens
         function test_round_trip(filepath)
             reader = open(BigWig.Reader, filepath)
             buffer = IOBuffer()
-            data = buffer.data
             writer = BigWig.Writer(buffer, BigWig.chromlist(reader))
             original = []
             for record in reader
@@ -142,10 +135,10 @@ using FormatSpecimens
                 write(writer, t)
                 push!(original, t)
             end
-            close(writer)
+            BigWig.finalize_file(writer)
             close(reader)
 
-            reader = BigWig.Reader(IOBuffer(data))
+            reader = BigWig.Reader(seekstart(buffer))
             copy = []
             for record in reader
                 t = (BigWig.chrom(record), BigWig.chromstart(record), BigWig.chromend(record), BigWig.value(record))
